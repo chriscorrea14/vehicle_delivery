@@ -19,7 +19,7 @@ def distance(locations_table, location1, location2):
     return 1.2 * 3959 * c
 
 def closest_vdc(locations_table, dealer):
-    print locations_table.head(20)
+    print(locations_table.head(20))
 
 if __name__ == '__main__':
     locations = pd.read_excel(io='data/location.xlsx', sheet_name='LocationLatLong')
