@@ -24,5 +24,5 @@ def closest_vdc(locations_table, dealer):
 if __name__ == '__main__':
     locations = pd.read_excel(io='data/location.xlsx', sheet_name='LocationLatLong')
     locations = locations.set_index('Location')
-    print locations.head(20)
-    print "Distance from location 2 to location 17 is: ", distance(locations, 2, 17)
+    print(locations.head(20))
+    print("Distance from location 2 to location 17 is: ", distance(locations, 2, 17))
