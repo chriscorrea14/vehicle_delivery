@@ -60,3 +60,6 @@ class VDC(Location):
 
     def setRail(self, rail):
         self.rail = rail
+
+    def __str__(self):
+        return super().__str__() + " Capacity: " + str(self.getCap()) + " Rail Available: " + str(self.getRail())
