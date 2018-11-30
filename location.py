@@ -30,6 +30,8 @@ class Location:
     def setLon(self, lon):
         self.lon = lon
 
+    def __str__(self):
+        return self.name + " Lat: " + str(self.getLat()) + " Lon: " + str(self.getLon())
 
 class VDC(Location):
 
