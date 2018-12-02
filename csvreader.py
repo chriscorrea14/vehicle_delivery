@@ -1,4 +1,5 @@
 from location import *
+import csv
 
 def readData():
     locdict = {}
