@@ -30,6 +30,9 @@ class Location:
     def setLon(self, lon):
         self.lon = lon
 
+    def toVDC(self, cap, rail):
+        return VDC(self.getName(), self.getLat(), self.getLon(), cap, rail)
+
     def __str__(self):
         return self.name + " Lat: " + str(self.getLat()) + " Lon: " + str(self.getLon())
 
@@ -39,12 +42,9 @@ class VDC(Location):
     rail = False
 
     def __init__(self, name, lat, lon, cap, rail):
-        super().__init__(self, name, lat, lon)
+        super().__init__(name, lat, lon)
         self.cap = cap
         self.rail = rail
-
-    def __init__(self, loc, cap, rail):
-        VDC.__init__(self, loc.getName(), loc.getLat(), loc.getLon(), cap, rail)
 
     def isVDC(self):
         return True;
