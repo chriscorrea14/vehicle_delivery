@@ -1,6 +1,9 @@
 import csv
 import pandas as pd
 import numpy as np
+from csvreader import *
+import networkx as nx
+from distances import distance
 from math import sin, cos, radians, sqrt, asin
 
 class Location:
@@ -63,3 +66,36 @@ class VDC(Location):
 
     def __str__(self):
         return super().__str__() + " Capacity: " + str(self.getCap()) + " Rail Available: " + str(self.getRail())
+
+class Graph:
+    #Wrapper class for networkx's Graph class
+    locdict = {}
+    G = None
+    paths = None
+    pathLengths = None
+
+    def __init__(self):
+        locdict = readData()
+        G = nx.Graph()
+        G.add_nodes_from(locdict.keys())
+        for loc1 in locdict.keys():
+            for loc2 in locdict.keys():
+                G.add_edge(loc1, loc2, weight=distance(locdict[loc1], locdict[loc2]))
+
+        paths = dict(nx.all_pairs_shortest_paths(G))
+        pathLengths = dict(nx.all_pairs_shortest_path_length(G))
+
+    def getVDCs(self):
+        return {k:v for (k, v) in self.locdict.items() if v.isVDC()}
+
+    def getDealers(self):
+        return {k: v for (k, v) in self.locdict.items() if not v.isVDC()}
+
+    def shortestPath(self, loc1, loc2):
+        # Given two string identifiers for VDCs, return the shortest path between them as determined by Dijkstra's.
+        # Eventually need to extend this to dealers, but I'll deal with that later.
+        # There's probably bugs with routing through VDCs, but I'll deal with that later.
+        return self.paths[loc1][loc2]
+
+    def shortestPathLength(self, loc1, loc2):
+        return self.pathLengths[loc1][loc2]

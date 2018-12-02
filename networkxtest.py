@@ -1,15 +1,7 @@
 from csvreader import *
 import networkx as nx
+from distances import distance
 import matplotlib.pyplot as plt
-
-def distance(location1, location2):
-    lat1, lat2 = location1.getLat(), location2.getLat()
-    long1 = location1.getLon()
-    long2 = location2.getLon()
-    c = 2 * asin(sqrt(
-        sin((lat1 - lat2) / 2.0) ** 2 + cos(lat1) * cos(lat2) * sin((long1 - long2) / 2.0) ** 2
-    ))
-    return 1.2 * 3959 * c
 
 #locdict = readData()
 

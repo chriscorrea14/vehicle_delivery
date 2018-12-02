@@ -18,6 +18,16 @@ def distance(locations_table, location1, location2):
     ))
     return 1.2 * 3959 * c
 
+def distance(location1, location2):
+    #Returns the distance between two location objects
+    lat1, lat2 = location1.getLat(), location2.getLat()
+    long1 = location1.getLon()
+    long2 = location2.getLon()
+    c = 2 * asin(sqrt(
+        sin((lat1 - lat2) / 2.0) ** 2 + cos(lat1) * cos(lat2) * sin((long1 - long2) / 2.0) ** 2
+    ))
+    return 1.2 * 3959 * c
+
 def closest_vdc(locations_table, dealer):
     print(locations_table.head(20))
 
