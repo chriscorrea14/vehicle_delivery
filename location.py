@@ -30,13 +30,37 @@ class Location:
     def toVDC(self, cap, rail):
         return VDC(self.getName(), self.getLat(), self.getLon(), cap, rail)
 
+    def toDealer(self):
+        return Dealer(self.getName(), self.getLat(), self.getLon())
+
     def __str__(self):
         return self.name + " Lat: " + str(self.getLat()) + " Lon: " + str(self.getLon())
+
+class Dealer(Location):
+    vdc = None
+    deadline = None
+
+    def __init__(self, name, lat, lon, vdc = None):
+        super().__init__(name, lat, lon)
+        self.vdc = vdc
+
+    def getVDC(self):
+        return self.vdc
+
+    def setVDC(self, vdc):
+        self.vdc = vdc
+
+    def __str__(self):
+        vdcname = "None"
+        if not self.vdc == None:
+            vdcname = self.vdc.getName()
+        return super().__str__() + " VDC: " + vdcname
 
 class VDC(Location):
 
     cap = 0
     rail = False
+    dealerDict = {}
 
     def __init__(self, name, lat, lon, cap, rail):
         super().__init__(name, lat, lon)
@@ -59,5 +83,7 @@ class VDC(Location):
         self.rail = rail
 
     def __str__(self):
-        return super().__str__() + " Capacity: " + str(self.getCap()) + " Rail Available: " + str(self.getRail())
+        output = super().__str__() + " Capacity: " + str(self.getCap()) + " Rail Available: " + str(self.getRail())
+        output += "\nDealers: " + self.dealerDict.values().__str__()
+        return output
 

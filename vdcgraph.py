@@ -8,15 +8,20 @@ from math import sin, cos, radians, sqrt, asin
 
 class VDCGraph:
     #Wrapper class for networkx's Graph class
-    locdict = {}
+    dealerDict = {}
+    vdcDict = {}
     G = None
     paths = None
     pathLengths = None
 
     def __init__(self):
-        self.locdict = readData()
+        locdict = readData()
+
         #Throwing all of the dealers away as a first pass
-        self.locdict = {k:v for (k, v) in self.locdict.items() if v.isVDC()}
+        self.vdcDict = {k:v for (k, v) in self.locdict.items() if v.isVDC()}
+        self.dealerDict = locdict - self.vdcDict
+
+
         G = nx.Graph()
         G.add_nodes_from(self.locdict.keys())
         for loc1 in self.locdict.keys():
