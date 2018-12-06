@@ -8,6 +8,7 @@ from math import sin, cos, radians, sqrt, asin
 
 class VDCGraph:
     #Wrapper class for networkx's Graph class
+    locdict = {}
     dealerDict = {}
     vdcDict = {}
     G = None
@@ -15,11 +16,11 @@ class VDCGraph:
     vdcPathLengths = None
 
     def __init__(self):
-        locdict = readData()
+        self.locdict = readData()
 
         #Split the locations into dealers and vdcs
-        self.vdcDict = {k:v for (k, v) in locdict.items() if v.isVDC()}
-        self.dealerDict = {k:v for (k, v) in locdict.items() if not v.isVDC()}
+        self.vdcDict = {k:v for (k, v) in self.locdict.items() if v.isVDC()}
+        self.dealerDict = {k:v for (k, v) in self.locdict.items() if not v.isVDC()}
 
 
         self.G = nx.Graph()
@@ -29,7 +30,7 @@ class VDCGraph:
         # Graph distances between vdcs
         for loc1 in self.vdcDict.keys():
             for loc2 in self.vdcDict.keys():
-                self.G.add_edge(loc1, loc2, weight=distance(self.vdcDict[loc1], self.vdcDict[loc2]))
+                self.G.add_edge(loc1, loc2, weight=distance(self.vdcDict[loc1], self.vdcDict[loc2])**2)
 
         # Generate paths and lengths between VDCs
         self.vdcPaths = dict(nx.all_pairs_dijkstra_path(self.G))
@@ -62,10 +63,15 @@ class VDCGraph:
         # return the shortest path between them as determined by Dijkstra's, excluding the start.
         loc1, loc2 = str(loc1), str(loc2)
         if loc2 in self.vdcDict.keys():
-            output = self.vdcPaths[loc1][loc2]
+            path = self.vdcPaths[loc1][loc2]
         if loc2 in self.dealerDict.keys():
-            output = self.vdcPaths[loc1][self.dealerDict[loc2].getVDC().getName()] + [loc2]
-        return output[1:]
+            path = self.vdcPaths[loc1][self.dealerDict[loc2].getVDC().getName()] + [loc2]
+        rail = []
+        for i in range(1, len(path)):
+            rail.append(self.locdict[path[i-1]].hasRailPath(self.locdict[path[i]]))
+        path = path[1:]
+        output = list(zip(rail, path))
+        return output
 
     def shortestPathLength(self, loc1, loc2):
         loc1, loc2 = str(loc1), str(loc2)
@@ -73,3 +79,4 @@ class VDCGraph:
             return self.vdcPathLengths[loc1][loc2]
         if loc2 in self.dealerDict.keys():
             return self.vdcPathLengths[loc1][self.dealerDict[loc2].getVDC().getName()] + self.dealerDict[loc2].getVDCDist()
+

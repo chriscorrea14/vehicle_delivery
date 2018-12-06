@@ -34,6 +34,15 @@ class Location:
     def toDealer(self):
         return Dealer(self.getName(), self.getLat(), self.getLon())
 
+    def getRail(self):
+        return False
+
+    def hasRailPath(self, loc):
+        if self.getRail() and loc.getRail():
+            return 'rail'
+        else:
+            return 'truck'
+
     def __str__(self):
         return self.name + " Lat: " + str(self.getLat()) + " Lon: " + str(self.getLon())
 
