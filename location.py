@@ -43,7 +43,7 @@ class Dealer(Location):
     deadline = None
 
     def __init__(self, name, lat, lon, vdc = None):
-        super().__init__(name, lat, lon)
+        Location.__init__(self, name, lat, lon)
         self.vdc = vdc
         if vdc is not None:
             self.vdcDist = distance(self, vdc)
@@ -73,7 +73,7 @@ class VDC(Location):
     dealerDict = {}
 
     def __init__(self, name, lat, lon, cap, rail):
-        super().__init__(name, lat, lon)
+        Location.__init__(self, name, lat, lon)
         self.cap = cap
         self.rail = rail
         self.dealerDict = {}
