@@ -16,7 +16,7 @@ def readData():
             for row in vdcreader:
                 locname = str(row[0])
                 loc = locdict[locname]
-                locdict[locname] = loc.toVDC(cap = float(row[1]), rail = bool(row[2]))
+                locdict[locname] = loc.toVDC(cap = float(row[1]), rail = (row[2] == 'TRUE'))
     else:
         with open("LocationLatLong.csv") as csvfile:
             locreader = csv.reader(csvfile, dialect='excel', delimiter=',')
@@ -29,7 +29,7 @@ def readData():
             for row in vdcreader:
                 locname = str(row[0])
                 loc = locdict[locname]
-                locdict[locname] = loc.toVDC(cap = float(row[1]), rail = bool(row[2]))
+                locdict[locname] = loc.toVDC(cap = float(row[1]), rail = (row[2] == 'TRUE'))
 
     #Convert the rest of the Locations to Dealers
     for loc in locdict.keys():
