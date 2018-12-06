@@ -69,7 +69,6 @@ class Dealer(Location):
 class VDC(Location):
 
     cap = 0
-    rail = False
     dealerDict = {}
 
     def __init__(self, name, lat, lon, cap, rail):

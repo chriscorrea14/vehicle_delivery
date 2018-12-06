@@ -59,7 +59,7 @@ class VDCGraph:
 
     def shortestPath(self, loc1, loc2):
         # Given two string identifiers where the first is a VDC,
-        # return the shortest path between them as determined by Dijkstra's.
+        # return the shortest path between them as determined by Dijkstra's, excluding the start.
         loc1, loc2 = str(loc1), str(loc2)
         if loc2 in self.vdcDict.keys():
             output = self.vdcPaths[loc1][loc2]
