@@ -62,9 +62,10 @@ class VDCGraph:
         # return the shortest path between them as determined by Dijkstra's.
         loc1, loc2 = str(loc1), str(loc2)
         if loc2 in self.vdcDict.keys():
-            return self.vdcPaths[loc1][loc2]
+            output = self.vdcPaths[loc1][loc2]
         if loc2 in self.dealerDict.keys():
-            return self.vdcPaths[loc1][self.dealerDict[loc2].getVDC().getName()] + [loc2]
+            output = self.vdcPaths[loc1][self.dealerDict[loc2].getVDC().getName()] + [loc2]
+        return output[1:]
 
     def shortestPathLength(self, loc1, loc2):
         loc1, loc2 = str(loc1), str(loc2)
