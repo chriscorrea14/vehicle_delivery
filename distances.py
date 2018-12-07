@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from math import sin, cos, radians, sqrt, asin
 
-def distance(locations_table, location1, location2):
+def distance_table(locations_table, location1, location2):
     # Defined on bottom of page 14 of Intro to Informs
     if isinstance(location1, str) and location1.isdigit():
         location1 = int(location1)
@@ -28,11 +28,8 @@ def distance(location1, location2):
     ))
     return 1.2 * 3959 * c
 
-def closest_vdc(locations_table, dealer):
-    print(locations_table.head(20))
-
 if __name__ == '__main__':
     locations = pd.read_excel(io='data/location.xlsx', sheet_name='LocationLatLong')
     locations = locations.set_index('Location')
     print(locations.head(20))
-    print("Distance from location 2 to location 17 is: ", distance(locations, 2, 17))
+    print("Distance from location 2 to location 17 is: ", distance_table(locations, 2, 17))

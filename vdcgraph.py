@@ -1,10 +1,10 @@
 import csv
 from csvreader import *
 import networkx as nx
+import pandas as pd
 from distances import distance
 from math import sin, cos, radians, sqrt, asin
-
-
+import sys
 
 class VDCGraph:
     #Wrapper class for networkx's Graph class
@@ -15,7 +15,8 @@ class VDCGraph:
     vdcPaths = None
     vdcPathLengths = None
 
-    def __init__(self):
+    def __init__(self, lambdaa=1, rail=False):
+        self.rail = rail
         self.locdict = readData()
 
         #Split the locations into dealers and vdcs
@@ -30,7 +31,7 @@ class VDCGraph:
         # Graph distances between vdcs
         for loc1 in self.vdcDict.keys():
             for loc2 in self.vdcDict.keys():
-                self.G.add_edge(loc1, loc2, weight=distance(self.vdcDict[loc1], self.vdcDict[loc2])**2)
+                self.G.add_edge(loc1, loc2, weight=distance(self.vdcDict[loc1], self.vdcDict[loc2])**lambdaa)
 
         # Generate paths and lengths between VDCs
         self.vdcPaths = dict(nx.all_pairs_dijkstra_path(self.G))
@@ -66,9 +67,12 @@ class VDCGraph:
             path = self.vdcPaths[loc1][loc2]
         if loc2 in self.dealerDict.keys():
             path = self.vdcPaths[loc1][self.dealerDict[loc2].getVDC().getName()] + [loc2]
-        rail = []
-        for i in range(1, len(path)):
-            rail.append(self.locdict[path[i-1]].hasRailPath(self.locdict[path[i]]))
+        if self.rail:
+            rail = []
+            for i in range(1, len(path)):
+                rail.append(self.locdict[path[i-1]].hasRailPath(self.locdict[path[i]]))
+        else:
+            rail = ['truck'] * len(path)
         path = path[1:]
         output = list(zip(rail, path))
         return output
@@ -80,3 +84,5 @@ class VDCGraph:
         if loc2 in self.dealerDict.keys():
             return self.vdcPathLengths[loc1][self.dealerDict[loc2].getVDC().getName()] + self.dealerDict[loc2].getVDCDist()
 
+if __name__ == '__main__':
+    VDCGraph()
